@@ -5,18 +5,19 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * KableHero Lite design system — "storm ops at night".
- * Deep slate-navy field console, hazard-tier signal colors, condensed
- * utilitarian type. All colors are oklch tokens; never hardcode in components.
+ * KableHero Lite — Claymorphism Design System.
+ * Soft, extruded, "clay-like" elements with 16–24px rounded corners,
+ * soft drop shadows combined with soft inset highlights for a puffy 3D volume,
+ * muted pastel backgrounds, no hard 1px borders, and high contrast for outdoor sunlight readability.
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 1.75rem;
+  --radius-3xl: 2rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,35 +46,71 @@
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.19 0.035 250);
-  --foreground: oklch(0.96 0.01 240);
-  --surface: oklch(0.24 0.035 250);
-  --card: oklch(0.24 0.035 250);
-  --card-foreground: oklch(0.96 0.01 240);
-  --popover: oklch(0.24 0.035 250);
-  --popover-foreground: oklch(0.96 0.01 240);
-  --primary: oklch(0.83 0.17 92);
-  --primary-foreground: oklch(0.2 0.04 250);
-  --secondary: oklch(0.3 0.04 250);
-  --secondary-foreground: oklch(0.96 0.01 240);
-  --muted: oklch(0.28 0.035 250);
-  --muted-foreground: oklch(0.72 0.02 245);
-  --accent: oklch(0.72 0.14 215);
-  --accent-foreground: oklch(0.18 0.04 250);
-  --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(0.98 0.01 240);
-  --border: oklch(0.34 0.035 250);
-  --input: oklch(0.32 0.035 250);
-  --ring: oklch(0.83 0.17 92);
-  --tier-critical: oklch(0.62 0.23 25);
-  --tier-urgent: oklch(0.73 0.18 55);
-  --tier-low: oklch(0.85 0.16 95);
+  --radius: 1.25rem;
+  /* Muted pastel clay canvas */
+  --background: #edf2f7;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #f59e0b;
+  --primary-foreground: #451a03;
+  --secondary: #e0f2fe;
+  --secondary-foreground: #0369a1;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --accent: #dbeafe;
+  --accent-foreground: #1e40af;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.7);
+  --input: #f1f5f9;
+  --ring: #f59e0b;
+  --tier-critical: #ef4444;
+  --tier-urgent: #f97316;
+  --tier-low: #eab308;
+
+  /* Claymorphism shadow presets */
+  --clay-card-shadow: 
+    8px 12px 24px -4px rgba(45, 62, 80, 0.12),
+    -4px -4px 14px 0px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px 0px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px 0px rgba(100, 116, 139, 0.12);
+
+  --clay-btn-shadow:
+    6px 8px 18px -2px rgba(45, 62, 80, 0.16),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 3px 0px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 4px 0px rgba(0, 0, 0, 0.12);
+
+  --clay-btn-active-shadow:
+    inset 3px 3px 6px 0px rgba(0, 0, 0, 0.18),
+    inset -2px -2px 4px 0px rgba(255, 255, 255, 0.6),
+    2px 3px 6px rgba(45, 62, 80, 0.08);
+
+  --clay-inset-shadow:
+    inset 3px 3px 6px 0px rgba(100, 116, 139, 0.14),
+    inset -2px -2px 4px 0px rgba(255, 255, 255, 0.95);
 }
 
 .dark {
-  --background: oklch(0.19 0.035 250);
-  --foreground: oklch(0.96 0.01 240);
+  --background: #1e2633;
+  --foreground: #f8fafc;
+  --surface: #273142;
+  --card: #273142;
+  --card-foreground: #f8fafc;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --input: #1f2937;
+  --border: rgba(255, 255, 255, 0.15);
+
+  --clay-card-shadow: 
+    8px 12px 24px -4px rgba(0, 0, 0, 0.4),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.05),
+    inset 2px 2px 4px 0px rgba(255, 255, 255, 0.1),
+    inset -2px -2px 6px 0px rgba(0, 0, 0, 0.3);
 }
 
 @layer base {
@@ -90,6 +127,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     overscroll-behavior-y: none;
+    min-height: 100vh;
   }
 
   h1,
@@ -101,10 +139,31 @@
   }
 }
 
+/* Claymorphism Base Card / Panel */
+.clay-card {
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: var(--clay-card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .clay-card {
+  background: #273142;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Backward-compatible panel utility that uses clay styling */
 @utility panel {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
+  background-color: #ffffff;
+  border-radius: 22px;
+  box-shadow: var(--clay-card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.dark .panel {
+  background-color: #273142;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @utility label-caps {
@@ -113,37 +172,203 @@
   letter-spacing: 0.14em;
   font-size: 0.75rem;
   color: var(--muted-foreground);
+  font-weight: 700;
 }
 
-/* Leaflet dark tuning */
+/* Pastel Tinted Clay Cards */
+.clay-card-amber {
+  background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 100%);
+  border-radius: 22px;
+  box-shadow: 
+    8px 12px 24px -4px rgba(180, 83, 9, 0.12),
+    -4px -4px 14px 0px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px 0px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px 0px rgba(217, 119, 6, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.clay-card-emerald {
+  background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 22px;
+  box-shadow: 
+    8px 12px 24px -4px rgba(16, 185, 129, 0.12),
+    -4px -4px 14px 0px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px 0px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px 0px rgba(5, 150, 105, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.clay-card-blue {
+  background: linear-gradient(145deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 22px;
+  box-shadow: 
+    8px 12px 24px -4px rgba(2, 132, 199, 0.12),
+    -4px -4px 14px 0px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px 0px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px 0px rgba(3, 105, 161, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+.clay-card-red {
+  background: linear-gradient(145deg, #fff1f2 0%, #fee2e2 100%);
+  border-radius: 22px;
+  box-shadow: 
+    8px 12px 24px -4px rgba(225, 29, 72, 0.12),
+    -4px -4px 14px 0px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px 0px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px 0px rgba(190, 18, 60, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+}
+
+/* Claymorphism Buttons */
+.clay-btn {
+  border-radius: 18px;
+  box-shadow: var(--clay-btn-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.clay-btn:active:not(:disabled) {
+  box-shadow: var(--clay-btn-active-shadow);
+  transform: translateY(1.5px);
+}
+
+.clay-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.clay-btn-primary {
+  background: linear-gradient(145deg, #fbbf24 0%, #f59e0b 100%);
+  color: #451a03;
+  box-shadow: 
+    6px 8px 18px -2px rgba(245, 158, 11, 0.35),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 3px 0px rgba(255, 255, 255, 0.85),
+    inset -2px -2px 4px 0px rgba(180, 83, 9, 0.25);
+}
+
+.clay-btn-neutral {
+  background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+  color: #0f172a;
+  box-shadow: var(--clay-btn-shadow);
+}
+
+.clay-btn-critical {
+  background: linear-gradient(145deg, #f87171 0%, #ef4444 100%);
+  color: #ffffff;
+  box-shadow: 
+    6px 8px 18px -2px rgba(239, 68, 68, 0.32),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 3px 0px rgba(255, 255, 255, 0.75),
+    inset -2px -2px 4px 0px rgba(153, 27, 27, 0.25);
+}
+
+.clay-btn-urgent {
+  background: linear-gradient(145deg, #fb923c 0%, #f97316 100%);
+  color: #ffffff;
+  box-shadow: 
+    6px 8px 18px -2px rgba(249, 115, 22, 0.32),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 3px 0px rgba(255, 255, 255, 0.75),
+    inset -2px -2px 4px 0px rgba(154, 52, 18, 0.25);
+}
+
+.clay-btn-low {
+  background: linear-gradient(145deg, #facc15 0%, #eab308 100%);
+  color: #422006;
+  box-shadow: 
+    6px 8px 18px -2px rgba(234, 179, 8, 0.32),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 3px 0px rgba(255, 255, 255, 0.85),
+    inset -2px -2px 4px 0px rgba(161, 98, 7, 0.25);
+}
+
+.clay-btn-tanod {
+  background: linear-gradient(145deg, #34d399 0%, #10b981 100%);
+  color: #064e3b;
+  box-shadow: 
+    6px 8px 18px -2px rgba(16, 185, 129, 0.32),
+    -3px -3px 10px 0px rgba(255, 255, 255, 0.9),
+    inset 2px 2px 3px 0px rgba(255, 255, 255, 0.85),
+    inset -2px -2px 4px 0px rgba(4, 120, 87, 0.25);
+}
+
+/* Clay Inset Input Fields */
+.clay-input {
+  background: #f1f5f9;
+  border-radius: 18px;
+  box-shadow: var(--clay-inset-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  color: #0f172a;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.clay-input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 
+    inset 2px 2px 4px 0px rgba(245, 158, 11, 0.15),
+    inset -2px -2px 4px 0px rgba(255, 255, 255, 0.9),
+    0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+/* Clay Pills / Badges */
+.clay-pill {
+  border-radius: 9999px;
+  box-shadow: 
+    3px 4px 8px rgba(45, 62, 80, 0.08),
+    -2px -2px 6px rgba(255, 255, 255, 0.9),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.85),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+}
+
+/* Leaflet map tuning for Claymorphism */
 .leaflet-container {
-  background: var(--background);
+  background: #e2e8f0;
   font-family: var(--font-sans);
+  border-radius: 20px;
 }
-.leaflet-tile-pane {
-  filter: invert(1) hue-rotate(180deg) brightness(0.86) contrast(0.92) saturate(0.6);
-}
+
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: var(--surface);
-  color: var(--foreground);
-  border-radius: var(--radius-lg);
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 22px !important;
+  box-shadow: 8px 16px 32px rgba(45, 62, 80, 0.18), inset 2px 2px 4px rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
+
 .leaflet-popup-content {
-  margin: 0.75rem;
-  width: 15rem !important;
+  margin: 0.85rem;
+  width: 16rem !important;
 }
+
 .leaflet-control-attribution {
-  background: rgba(0, 0, 0, 0.4) !important;
-  color: var(--muted-foreground) !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  color: #475569 !important;
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  margin: 4px !important;
 }
-.leaflet-control-attribution a {
-  color: var(--muted-foreground) !important;
-}
+
 .kable-pin {
   border-radius: 9999px;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.4);
+  border: 3px solid #ffffff;
+  box-shadow: 
+    0 4px 10px rgba(45, 62, 80, 0.25),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.2);
   transition: transform 0.15s ease;
   display: flex;
   align-items: center;
@@ -152,13 +377,13 @@
 
 @keyframes pin-pulse-red {
   0% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 0 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7), 0 4px 10px rgba(45, 62, 80, 0.25);
   }
   70% {
-    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0), 0 0 0 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 14px rgba(239, 68, 68, 0), 0 4px 10px rgba(45, 62, 80, 0.25);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0), 0 0 0 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0), 0 4px 10px rgba(45, 62, 80, 0.25);
   }
 }
 
@@ -167,13 +392,15 @@
 }
 
 .leaflet-control-zoom {
-  border: 1px solid var(--border) !important;
-  background: var(--surface) !important;
+  border: none !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: var(--clay-btn-shadow) !important;
 }
 
 .leaflet-control-zoom a {
-  background: var(--surface) !important;
-  color: var(--foreground) !important;
-  border-bottom: 1px solid var(--border) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  font-weight: bold;
 }
-
