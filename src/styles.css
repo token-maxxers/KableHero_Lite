@@ -142,6 +142,38 @@
 }
 .kable-pin {
   border-radius: 9999px;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+@keyframes pin-pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 0 3px rgba(0, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0), 0 0 0 3px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0), 0 0 0 3px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.pin-pulse-critical {
+  animation: pin-pulse-red 1.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.leaflet-control-zoom {
+  border: 1px solid var(--border) !important;
+  background: var(--surface) !important;
+}
+
+.leaflet-control-zoom a {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
