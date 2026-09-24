@@ -1,29 +1,24 @@
-# Welcome to your Lovable project
+# KableHero Lite (LinemanQuest)
 
-This project was built with [Lovable](https://lovable.dev).
+Mobile-first PWA for crowdsourced electric hazard reporting and dispatch triage
+for Philippine electric cooperatives, barangays and residents.
 
-## Build with Lovable
+After typhoons and accidents, downed poles and live wires get reported through
+congested hotlines or social posts with no coordinates and no proof. KableHero
+Lite turns a report into a pinned, photo-backed, community-verified ticket in
+three taps — behind a safe-distance gate.
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+## Screens
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+| Route | Purpose |
+| --- | --- |
+| `/` | Reporter flow: GPS + photo capture, 3-button hazard tier, safe-distance hold, submit |
+| `/map` | Triage map: colour-coded pins, verification counts, community voting, dispatcher status updates, realtime |
+| `/profile` | XP, civic tier (Purok Scout → Tanod Specialist → Master Lineman), report history |
+| `/auth` | Email/password and Google sign-in |
 
-## Development
+## Documentation
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+- [Current build overview](docs/01-current-build.md) — what ships today, data model, safe-distance gate, XP system
+- [Roadmap](docs/02-roadmap.md) — SMS gateway fallback, dedup clustering, Storm Patrol quests, bill micro-rebates, Tanod verification
+- [Setup](docs/03-setup.md) — environment, backend, running locally, PWA install
