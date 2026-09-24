@@ -49,11 +49,11 @@ export const STATUS_FLOW: ReportStatus[] = ["reported", "dispatched", "resolved"
 export const XP_REPORT = 50;
 export const XP_VALIDATION = 20;
 
-export const CIVIC_TIERS = [
+export const CIVIC_TIERS: { name: string; min: number }[] = [
   { name: "Purok Scout", min: 0 },
   { name: "Tanod Specialist", min: 250 },
   { name: "Master Lineman", min: 1000 },
-] as const;
+];
 
 export function civicTier(xp: number) {
   let current = CIVIC_TIERS[0]!;
