@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
-import L from "leaflet";
+import { useEffect, useRef, useState } from "react";
+import type * as LeafletModule from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { TIER_COLOR, type HazardTier, type ReportStatus } from "@/lib/kable";
+
+type LType = typeof LeafletModule;
 
 export type MapReport = {
   id: string;
@@ -34,24 +36,37 @@ export default function HazardMap({
   className,
   autoFit = true,
 }: Props) {
+  const [leaflet, setLeaflet] = useState<LType | null>(null);
   const elRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const layerRef = useRef<L.LayerGroup | null>(null);
+  const mapRef = useRef<LeafletModule.Map | null>(null);
+  const layerRef = useRef<LeafletModule.LayerGroup | null>(null);
   const didFit = useRef(false);
 
   useEffect(() => {
-    if (!elRef.current || mapRef.current) return;
+    let active = true;
+    import("leaflet").then((mod) => {
+      if (active) {
+        setLeaflet(mod.default ?? mod);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!leaflet || !elRef.current || mapRef.current) return;
     const initialCenter = center || (reports.length > 0 ? [reports[0]!.lat, reports[0]!.lng] : DEFAULT_CENTER);
-    const map = L.map(elRef.current, { zoomControl: false, attributionControl: true }).setView(
+    const map = leaflet.map(elRef.current, { zoomControl: false, attributionControl: true }).setView(
       initialCenter,
       13
     );
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    leaflet.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution: "© OpenStreetMap contributors",
     }).addTo(map);
-    L.control.zoom({ position: "bottomright" }).addTo(map);
-    layerRef.current = L.layerGroup().addTo(map);
+    leaflet.control.zoom({ position: "bottomright" }).addTo(map);
+    layerRef.current = leaflet.layerGroup().addTo(map);
     mapRef.current = map;
 
     // Handle container resize
@@ -66,8 +81,7 @@ export default function HazardMap({
       mapRef.current = null;
       layerRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [leaflet, center, reports]);
 
   useEffect(() => {
     if (center && mapRef.current) {
@@ -76,6 +90,7 @@ export default function HazardMap({
   }, [center]);
 
   useEffect(() => {
+    if (!leaflet) return;
     const layer = layerRef.current;
     const map = mapRef.current;
     if (!layer || !map) return;
@@ -93,7 +108,7 @@ export default function HazardMap({
           ? `<span style="position:absolute;top:-6px;right:-6px;background:#1e293b;color:#f8fafc;font-size:10px;font-weight:700;border-radius:9999px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;border:1px solid #94a3b8;">${r.clusterCount}</span>`
           : "";
 
-      const icon = L.divIcon({
+      const icon = leaflet.divIcon({
         className: "",
         iconSize: [size, size],
         iconAnchor: [size / 2, size / 2],
@@ -107,7 +122,7 @@ export default function HazardMap({
         `,
       });
 
-      const marker = L.marker([r.lat, r.lng], { icon }).addTo(layer);
+      const marker = leaflet.marker([r.lat, r.lng], { icon }).addTo(layer);
 
       if (r.landmark || r.pole_number) {
         const titleText = `${r.hazard_tier.toUpperCase()}: ${r.landmark || r.pole_number}`;
@@ -122,10 +137,10 @@ export default function HazardMap({
 
     if (autoFit && !center && !didFit.current && reports.length > 0) {
       didFit.current = true;
-      const bounds = L.latLngBounds(reports.map((r) => [r.lat, r.lng] as [number, number])).pad(0.2);
+      const bounds = leaflet.latLngBounds(reports.map((r) => [r.lat, r.lng] as [number, number])).pad(0.2);
       map.fitBounds(bounds, { maxZoom: 14 });
     }
-  }, [reports, selectedId, onSelect, center, autoFit]);
+  }, [leaflet, reports, selectedId, onSelect, center, autoFit]);
 
   return <div ref={elRef} className={className} />;
 }
