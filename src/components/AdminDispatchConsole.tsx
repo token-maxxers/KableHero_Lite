@@ -164,19 +164,22 @@ export function AdminDispatchConsole({ reports, onRefresh }: AdminDispatchConsol
   return (
     <div className="flex flex-col bg-background text-foreground">
       {/* Top Operations Header */}
-      <header className="border-b border-border bg-surface/90 px-4 py-3 backdrop-blur">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="flex size-7 items-center justify-center rounded bg-amber-500/20 text-amber-400">
-              <Flame className="size-4" />
-            </span>
+      <header className="clay-card m-2 sm:m-4 p-4 space-y-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-9 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-md">
+              <Flame className="size-5" />
+            </div>
             <div>
-              <h1 className="font-display text-base font-semibold tracking-wider uppercase sm:text-lg">
-                BUSECO Operations & Dispatch Control
+              <div className="flex items-center gap-1.5">
+                <span className="clay-pill bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
+                  BUSECO Operations
+                </span>
+                <span className="text-[11px] text-slate-500 font-medium">· Dispatch Console</span>
+              </div>
+              <h1 className="font-display text-lg font-bold tracking-wider uppercase text-slate-900 mt-0.5">
+                Bukidnon Second Electric Cooperative Triage Command
               </h1>
-              <p className="text-xs text-muted-foreground">
-                Bukidnon Second Electric Cooperative · Real-time Triage Command
-              </p>
             </div>
           </div>
 
@@ -184,64 +187,64 @@ export function AdminDispatchConsole({ reports, onRefresh }: AdminDispatchConsol
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab("triage")}
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 font-display text-xs tracking-wider uppercase transition-colors ${
+              className={`clay-btn px-3.5 py-2 text-xs uppercase tracking-wider font-bold ${
                 activeTab === "triage"
-                  ? "bg-primary text-primary-foreground font-semibold"
-                  : "border border-border bg-surface text-muted-foreground hover:bg-muted"
+                  ? "clay-btn-primary"
+                  : "clay-btn-neutral text-slate-700"
               }`}
             >
-              <Layers className="size-3.5" />
+              <Layers className="mr-1.5 size-3.5" />
               Triage Queue & Map
             </button>
             <button
               onClick={() => setActiveTab("vouchers")}
-              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 font-display text-xs tracking-wider uppercase transition-colors ${
+              className={`clay-btn px-3.5 py-2 text-xs uppercase tracking-wider font-bold ${
                 activeTab === "vouchers"
-                  ? "bg-primary text-primary-foreground font-semibold"
-                  : "border border-border bg-surface text-muted-foreground hover:bg-muted"
+                  ? "clay-btn-primary"
+                  : "clay-btn-neutral text-slate-700"
               }`}
             >
-              <CreditCard className="size-3.5" />
+              <CreditCard className="mr-1.5 size-3.5" />
               Voucher Audit Desk
             </button>
             <button
               onClick={onRefresh}
               title="Refresh live feeds"
-              className="flex size-8 items-center justify-center rounded-md border border-border bg-surface text-muted-foreground hover:text-foreground"
+              className="clay-btn clay-btn-neutral size-9 p-0 text-slate-700"
             >
-              <RefreshCw className="size-3.5" />
+              <RefreshCw className="size-4" />
             </button>
           </div>
         </div>
 
         {/* Live Metrics Ticker */}
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6">
-          <div className="rounded border border-red-500/30 bg-red-950/20 px-2.5 py-1.5">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6 pt-2 border-t border-slate-100">
+          <div className="clay-card bg-red-50/80 border-red-200 p-2.5">
             <div className="flex items-center justify-between">
-              <span className="font-display text-xs tracking-wider text-red-400 uppercase">Critical (Red)</span>
+              <span className="font-display text-[11px] tracking-wider text-red-900 uppercase font-bold">Critical</span>
               <span className="size-2 rounded-full bg-red-500 animate-pulse" />
             </div>
-            <p className="font-display text-xl font-bold text-red-300">{stats.critical}</p>
+            <p className="font-display text-2xl font-extrabold text-red-600">{stats.critical}</p>
           </div>
-          <div className="rounded border border-orange-500/30 bg-orange-950/20 px-2.5 py-1.5">
-            <span className="font-display text-xs tracking-wider text-orange-400 uppercase">Urgent (Orange)</span>
-            <p className="font-display text-xl font-bold text-orange-300">{stats.urgent}</p>
+          <div className="clay-card bg-orange-50/80 border-orange-200 p-2.5">
+            <span className="font-display text-[11px] tracking-wider text-orange-900 uppercase font-bold">Urgent</span>
+            <p className="font-display text-2xl font-extrabold text-orange-600">{stats.urgent}</p>
           </div>
-          <div className="rounded border border-yellow-500/30 bg-yellow-950/20 px-2.5 py-1.5">
-            <span className="font-display text-xs tracking-wider text-yellow-400 uppercase">Low Risk</span>
-            <p className="font-display text-xl font-bold text-yellow-300">{stats.low}</p>
+          <div className="clay-card bg-yellow-50/80 border-yellow-200 p-2.5">
+            <span className="font-display text-[11px] tracking-wider text-amber-900 uppercase font-bold">Low Risk</span>
+            <p className="font-display text-2xl font-extrabold text-amber-600">{stats.low}</p>
           </div>
-          <div className="rounded border border-blue-500/30 bg-blue-950/20 px-2.5 py-1.5">
-            <span className="font-display text-xs tracking-wider text-blue-400 uppercase">Dispatched</span>
-            <p className="font-display text-xl font-bold text-blue-300">{stats.dispatched}</p>
+          <div className="clay-card bg-blue-50/80 border-blue-200 p-2.5">
+            <span className="font-display text-[11px] tracking-wider text-blue-900 uppercase font-bold">Dispatched</span>
+            <p className="font-display text-2xl font-extrabold text-blue-600">{stats.dispatched}</p>
           </div>
-          <div className="rounded border border-emerald-500/30 bg-emerald-950/20 px-2.5 py-1.5">
-            <span className="font-display text-xs tracking-wider text-emerald-400 uppercase">Fixed / Cleared</span>
-            <p className="font-display text-xl font-bold text-emerald-300">{stats.resolved}</p>
+          <div className="clay-card bg-emerald-50/80 border-emerald-200 p-2.5">
+            <span className="font-display text-[11px] tracking-wider text-emerald-900 uppercase font-bold">Resolved</span>
+            <p className="font-display text-2xl font-extrabold text-emerald-600">{stats.resolved}</p>
           </div>
-          <div className="rounded border border-border bg-surface px-2.5 py-1.5">
-            <span className="font-display text-xs tracking-wider text-muted-foreground uppercase">Incidents</span>
-            <p className="font-display text-xl font-bold text-foreground">{incidentGroups.length}</p>
+          <div className="clay-card bg-slate-50 p-2.5">
+            <span className="font-display text-[11px] tracking-wider text-slate-700 uppercase font-bold">Incidents</span>
+            <p className="font-display text-2xl font-extrabold text-slate-900">{incidentGroups.length}</p>
           </div>
         </div>
       </header>
