@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Award, Zap, Shield, Sparkles, CheckCircle, LogOut } from "lucide-react";
+import { Award, Zap, Shield, Sparkles, CheckCircle, LogOut, Radio, User } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/hooks/useAuth";
+import { useRole } from "@/hooks/useRole";
 import { supabase } from "@/integrations/supabase/client";
 import { RewardsMarketplace } from "@/components/RewardsMarketplace";
 import {
@@ -27,11 +28,6 @@ export const Route = createFileRoute("/profile")({
         content:
           "Track your XP, civic tier, safety badges and redeem electric bill discounts as a Purok Scout, Tanod Specialist, or Lineman Deputy.",
       },
-      { property: "og:title", content: "Civic Profile & Rewards — KableHero" },
-      {
-        property: "og:description",
-        content: "XP, safety badges, and BUSECO power rebate vouchers in KableHero.",
-      },
     ],
   }),
   component: ProfilePage,
@@ -39,11 +35,12 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { user, profile, roles, signOut, refreshProfile } = useAuth();
+  const { role, roleTitle } = useRole();
   const [demoXpOffset, setDemoXpOffset] = useState(0);
 
   // Real or demo data
   const currentXp = (profile?.xp_total ?? 320) + demoXpOffset;
-  const displayName = profile?.display_name || user?.email?.split("@")[0] || "Juan dela Cruz (Citizen)";
+  const displayName = profile?.display_name || user?.email?.split("@")[0] || "Juan dela Cruz";
   const currentUserId = user?.id || "demo-citizen";
 
   const { data: myReports = [] } = useQuery({
@@ -74,7 +71,7 @@ function ProfilePage() {
 
       const { data } = await supabase
         .from("reports")
-        .select("id, hazard_tier, status, verification_count, created_at, note")
+        .select("id, hazard_tier, status, verification_count, created_at, note, landmark, pole_number")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -84,8 +81,8 @@ function ProfilePage() {
         status: r.status as ReportStatus,
         verification_count: r.verification_count,
         created_at: r.created_at,
-        landmark: null,
-        pole_number: null,
+        landmark: r.landmark,
+        pole_number: r.pole_number,
       }));
     },
   });
@@ -112,83 +109,89 @@ function ProfilePage() {
 
   return (
     <AppShell>
-      <div className="space-y-5 px-4 py-4">
+      <div className="space-y-4 px-4 py-4 max-w-lg mx-auto">
         {/* Guest Banner if not signed in */}
         {!user && (
-          <div className="flex items-center justify-between rounded-lg border border-primary/30 bg-primary/10 p-3 text-xs">
+          <div className="clay-card-amber p-4 flex items-center justify-between text-xs text-amber-950">
             <div>
-              <span className="font-semibold text-foreground">Interactive Demo Profile</span>
-              <p className="text-[11px] text-muted-foreground">
-                Testing gamification rewards. Sign in anytime to sync to the cloud.
+              <span className="font-bold text-amber-950 block">Interactive Demo Profile</span>
+              <p className="text-[11px] text-amber-900/80">
+                Sign in with Supabase Auth to persist your roles and real XP.
               </p>
             </div>
             <Link
               to="/auth"
-              className="rounded bg-primary px-3 py-1 font-display text-xs font-bold text-primary-foreground uppercase"
+              className="clay-btn clay-btn-primary px-3 py-1.5 text-xs font-bold uppercase tracking-wider"
             >
               Sign In
             </Link>
           </div>
         )}
 
-        {/* Civic Rank Banner */}
-        <section className="panel p-5 space-y-3">
+        {/* Civic Rank Clay Banner */}
+        <section className="clay-card-amber p-5 space-y-3">
           <div className="flex items-start justify-between">
             <div>
-              <p className="label-caps">Civic Status Rank</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-2xl">{tier.badge}</span>
-                <h1 className="text-2xl font-bold uppercase tracking-tight text-primary sm:text-3xl">
+              <div className="flex items-center gap-1.5">
+                <span className="clay-pill bg-amber-200/80 text-amber-900 px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
+                  Civic Status
+                </span>
+                <span className="clay-pill bg-white text-slate-800 px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
+                  {role.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-3xl">{tier.badge}</span>
+                <h1 className="text-2xl font-bold uppercase tracking-tight text-amber-950 sm:text-3xl">
                   {tier.name}
                 </h1>
               </div>
-              <p className="mt-0.5 text-xs text-muted-foreground">{tier.description}</p>
+              <p className="mt-0.5 text-xs text-amber-900/90 font-medium">{tier.description}</p>
             </div>
 
             <div className="text-right">
-              <span className="font-display text-2xl font-bold text-primary sm:text-3xl">
+              <span className="font-display text-3xl font-extrabold text-amber-800">
                 {currentXp}
               </span>
-              <span className="block text-[10px] text-muted-foreground font-mono uppercase">
+              <span className="block text-[10px] text-amber-900/70 font-mono uppercase font-bold">
                 Total XP Earned
               </span>
             </div>
           </div>
 
-          <div className="space-y-1 pt-1">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="space-y-1.5 pt-2 border-t border-amber-200/60">
+            <div className="flex items-center justify-between text-xs font-semibold text-amber-900">
               <span>{displayName}</span>
               <span>{tier.next ? `${tier.nextAt! - currentXp} XP to ${tier.next}` : "Top Rank Reached"}</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+            {/* Puffy Clay Progress Bar */}
+            <div className="h-3 w-full overflow-hidden rounded-full bg-amber-200/80 shadow-inner p-0.5">
               <div
-                className="h-full bg-primary transition-all duration-300"
+                className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600 transition-all duration-300 shadow-sm"
                 style={{ width: `${tier.progress}%` }}
               />
             </div>
           </div>
 
-          {roles.length > 0 && (
-            <div className="flex items-center gap-1.5 pt-1 text-[11px] text-accent">
-              <Shield className="size-3.5" />
-              <span>Assigned Roles: {roles.join(", ").toUpperCase()}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-1.5 pt-1 text-[11px] text-amber-900 font-semibold">
+            <Shield className="size-3.5 text-amber-700" />
+            <span>Active Role Clearance: {roleTitle}</span>
+          </div>
         </section>
 
         {/* Quick Stats Grid */}
         <section className="grid grid-cols-2 gap-3">
-          <div className="panel p-3.5">
-            <p className="label-caps">Reports Filed</p>
-            <p className="mt-1 font-display text-2xl font-bold text-foreground">
+          <div className="clay-card p-4">
+            <p className="label-caps text-slate-600">Reports Transmitted</p>
+            <p className="mt-1 font-display text-2xl font-extrabold text-slate-900">
               {myReports.length}
             </p>
-            <p className="text-[10px] text-muted-foreground">+{XP_REPORT} XP per verified report</p>
+            <p className="text-[10px] text-slate-500 font-medium">+{XP_REPORT} XP per verified report</p>
           </div>
-          <div className="panel p-3.5">
-            <p className="label-caps">Community Validations</p>
-            <p className="mt-1 font-display text-2xl font-bold text-accent">{voteCount}</p>
-            <p className="text-[10px] text-muted-foreground">+{XP_VALIDATION} XP per confirm vote</p>
+          <div className="clay-card p-4">
+            <p className="label-caps text-slate-600">Field Validations</p>
+            <p className="mt-1 font-display text-2xl font-extrabold text-amber-600">{voteCount}</p>
+            <p className="text-[10px] text-slate-500 font-medium">+{XP_VALIDATION} XP per vote</p>
           </div>
         </section>
 
@@ -203,57 +206,57 @@ function ProfilePage() {
           onXpChange={handleXpChange}
         />
 
-        {/* My Reports History */}
-        <section className="panel p-4 space-y-3">
-          <p className="label-caps">Your Reported Hazards ({myReports.length})</p>
+        {/* My Reports History Clay List */}
+        <section className="clay-card p-5 space-y-3">
+          <p className="label-caps text-slate-700">Your Submitted Hazard Logs ({myReports.length})</p>
           <div className="space-y-2">
             {myReports.map((r) => (
               <div
                 key={r.id}
-                className="flex items-start gap-3 rounded-lg border border-border bg-background/50 p-3"
+                className="clay-card bg-slate-50/70 p-3.5 flex items-start gap-3 border border-slate-100"
               >
                 <span
-                  className="mt-1 size-3 shrink-0 rounded-full"
+                  className="mt-1 size-3.5 shrink-0 rounded-full shadow-sm"
                   style={{ backgroundColor: TIER_COLOR[r.hazard_tier] }}
                 />
                 <div className="flex-1 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-display font-semibold uppercase tracking-wide text-foreground">
+                    <span className="font-display font-bold uppercase tracking-wide text-slate-900">
                       {r.landmark || `${r.hazard_tier} hazard`}
                     </span>
-                    <span className="text-[10px] text-muted-foreground">{timeAgo(r.created_at)}</span>
+                    <span className="text-[10px] text-slate-500 font-medium">{timeAgo(r.created_at)}</span>
                   </div>
 
                   {r.pole_number && (
-                    <p className="text-[10px] font-mono text-amber-300 font-medium">
-                      Pole #{r.pole_number}
+                    <p className="text-[10px] font-mono text-amber-700 font-bold mt-0.5">
+                      Pole Stencil: #{r.pole_number}
                     </p>
                   )}
 
-                  <div className="mt-1.5 flex items-center gap-3 text-[11px] text-muted-foreground">
-                    <span className="rounded bg-muted px-1.5 py-0.2 font-display uppercase tracking-wider">
+                  <div className="mt-2 flex items-center justify-between text-[11px] text-slate-600">
+                    <span className="clay-pill bg-white px-2 py-0.5 font-display uppercase tracking-wider font-bold text-slate-800">
                       {STATUS_LABEL[r.status]}
                     </span>
-                    <span>{r.verification_count} confirmations</span>
+                    <span className="font-medium">{r.verification_count} field confirms</span>
                   </div>
                 </div>
               </div>
             ))}
             {myReports.length === 0 && (
-              <p className="text-xs text-muted-foreground text-center py-4">
+              <p className="text-xs text-slate-500 text-center py-4 font-medium">
                 No reports submitted yet. Spotting a fallen wire earns 50 XP!
               </p>
             )}
           </div>
         </section>
 
-        {/* Sign Out if authenticated */}
+        {/* Sign Out Button */}
         {user && (
           <button
             onClick={() => void signOut()}
-            className="flex items-center justify-center gap-2 w-full rounded-md border border-border py-2.5 font-display text-xs tracking-widest uppercase hover:bg-muted text-muted-foreground"
+            className="clay-btn clay-btn-neutral w-full py-3 text-xs tracking-widest uppercase font-bold text-slate-700 hover:text-red-600"
           >
-            <LogOut className="size-3.5" /> Sign Out
+            <LogOut className="mr-2 size-4" /> Sign Out from {user.email}
           </button>
         )}
       </div>
