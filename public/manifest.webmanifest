@@ -1,0 +1,16 @@
+{
+  "name": "KableHero Lite — Electric hazard reporting",
+  "short_name": "KableHero",
+  "description": "Report downed wires and electric hazards with photo proof and GPS.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#131c2b",
+  "theme_color": "#131c2b",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
