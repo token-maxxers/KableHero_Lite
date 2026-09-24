@@ -375,6 +375,15 @@ export async function updateReportStatus(
     if (sqlStatus) {
       updatePayload.status = sqlStatus;
     }
+    if (updates.assignedCrew !== undefined) {
+      updatePayload.assigned_crew = updates.assignedCrew;
+    }
+    if (updates.isTanodVerified !== undefined) {
+      updatePayload.is_tanod_verified = updates.isTanodVerified;
+    }
+    if (updates.note !== undefined) {
+      updatePayload.note = updates.note;
+    }
 
     await supabase.from("reports").update(updatePayload).eq("id", reportId);
   } catch (err) {
