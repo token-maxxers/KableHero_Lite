@@ -14,16 +14,140 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          xp_total: number
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string
+          id: string
+          xp_total?: number
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          xp_total?: number
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          hazard_tier: Database["public"]["Enums"]["hazard_tier"]
+          id: string
+          lat: number
+          lng: number
+          note: string | null
+          photo_url: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          updated_at: string
+          user_id: string
+          verification_count: number
+        }
+        Insert: {
+          created_at?: string
+          hazard_tier: Database["public"]["Enums"]["hazard_tier"]
+          id?: string
+          lat: number
+          lng: number
+          note?: string | null
+          photo_url?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          updated_at?: string
+          user_id: string
+          verification_count?: number
+        }
+        Update: {
+          created_at?: string
+          hazard_tier?: Database["public"]["Enums"]["hazard_tier"]
+          id?: string
+          lat?: number
+          lng?: number
+          note?: string | null
+          photo_url?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          updated_at?: string
+          user_id?: string
+          verification_count?: number
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      validations: {
+        Row: {
+          created_at: string
+          id: string
+          report_id: string
+          user_id: string
+          vote: Database["public"]["Enums"]["vote_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          report_id: string
+          user_id: string
+          vote: Database["public"]["Enums"]["vote_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          report_id?: string
+          user_id?: string
+          vote?: Database["public"]["Enums"]["vote_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "validations_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "citizen" | "dispatcher" | "tanod"
+      hazard_tier: "critical" | "urgent" | "low"
+      report_status: "reported" | "dispatched" | "resolved"
+      vote_type: "still_broken" | "resolved"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +274,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["citizen", "dispatcher", "tanod"],
+      hazard_tier: ["critical", "urgent", "low"],
+      report_status: ["reported", "dispatched", "resolved"],
+      vote_type: ["still_broken", "resolved"],
+    },
   },
 } as const
