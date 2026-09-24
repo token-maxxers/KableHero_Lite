@@ -35,6 +35,8 @@ import {
 } from "@/lib/reports";
 import HazardMap from "@/components/HazardMap";
 
+import { RoleGuard } from "@/components/RoleGuard";
+
 export const Route = createFileRoute("/map")({
   head: () => ({
     meta: [
@@ -51,8 +53,16 @@ export const Route = createFileRoute("/map")({
       },
     ],
   }),
-  component: MapPage,
+  component: GuardedMapPage,
 });
+
+function GuardedMapPage() {
+  return (
+    <RoleGuard allowedRoles={["dispatcher"]} requiredTitle="BUSECO Dispatcher">
+      <MapPage />
+    </RoleGuard>
+  );
+}
 
 function MapPage() {
   const { user, roles, refreshProfile } = useAuth();
