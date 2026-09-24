@@ -1,14 +1,17 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import type { AppRole } from "@/lib/kable";
 
-export type RoleMode = "citizen" | "admin";
+export type { AppRole };
 
 interface RoleContextType {
-  role: RoleMode;
-  setRole: (role: RoleMode) => void;
-  toggleRole: () => void;
-  isAdmin: boolean;
+  role: AppRole;
+  setRole: (role: AppRole) => void;
   isCitizen: boolean;
+  isDispatcher: boolean;
+  isTanod: boolean;
+  isAdmin: boolean; // Backwards compatible with existing admin checks (= isDispatcher)
+  roleTitle: string;
 }
 
 const RoleContext = createContext<RoleContextType | null>(null);
@@ -16,45 +19,50 @@ const RoleContext = createContext<RoleContextType | null>(null);
 const STORAGE_KEY = "kablehero_active_role_mode";
 
 export function RoleProvider({ children }: { children: ReactNode }) {
-  const { roles } = useAuth();
-  const [role, setRoleState] = useState<RoleMode>(() => {
+  const { role: authRole, user } = useAuth();
+
+  const [role, setRoleState] = useState<AppRole>(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "admin" || saved === "citizen") return saved;
+      const saved = localStorage.getItem(STORAGE_KEY) as AppRole;
+      if (saved === "citizen" || saved === "dispatcher" || saved === "tanod") return saved;
     }
-    return "citizen";
+    return authRole || "citizen";
   });
 
-  // If user actually has dispatcher or tanod role in Supabase and no manual preference set
+  // Whenever authRole updates from Supabase, update current role if user is signed in
   useEffect(() => {
-    if (roles.includes("dispatcher") || roles.includes("tanod")) {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) {
-        setRoleState("admin");
+    if (user && authRole) {
+      setRoleState(authRole);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(STORAGE_KEY, authRole);
       }
     }
-  }, [roles]);
+  }, [user, authRole]);
 
-  const setRole = (newRole: RoleMode) => {
+  const setRole = (newRole: AppRole) => {
     setRoleState(newRole);
     if (typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEY, newRole);
     }
   };
 
-  const toggleRole = () => {
-    const next = role === "citizen" ? "admin" : "citizen";
-    setRole(next);
-  };
+  const roleTitle =
+    role === "dispatcher"
+      ? "Dispatcher (BUSECO Ops)"
+      : role === "tanod"
+      ? "Tanod (Barangay Safety)"
+      : "Citizen Reporter";
 
   return (
     <RoleContext.Provider
       value={{
         role,
         setRole,
-        toggleRole,
-        isAdmin: role === "admin",
         isCitizen: role === "citizen",
+        isDispatcher: role === "dispatcher",
+        isTanod: role === "tanod",
+        isAdmin: role === "dispatcher",
+        roleTitle,
       }}
     >
       {children}
